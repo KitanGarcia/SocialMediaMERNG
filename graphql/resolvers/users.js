@@ -53,6 +53,24 @@ module.exports = {
     //parent gives result of input from last step
     //args is the register arguments from typeDefs.js. Args is destructured to registerInput here
     //info has general info on metadata
+    //
+    /*
+     *mutation{
+     *  register(registerInput:{
+     *    username:"123"
+     *    password:"123"
+     *    confirmPassword:"123"
+     *    email:"123123@gmail.com"
+     *  })
+     *  {  
+     *    id
+     *    email
+     *    token
+     *    username
+     *    createdAt
+     *  }
+     *}
+     */
     async register(
       _,
       {
@@ -66,7 +84,6 @@ module.exports = {
       if (!valid) {
         throw new UserInputError("Errors", { errors });
       }
-      //TODO: Make sure user doesn't akready exust
 
       //throwing error from apollo is user already exists (to prevent multiple sign ups as same user)
       const user = await User.findOne({ username });

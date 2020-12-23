@@ -14,7 +14,8 @@ const { MONGODB } = require("./config.js");
 //Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: ({ req }) => ({ req }) //takes request body and forwards it to context
 });
 
 //connect to DB before launching server
