@@ -1,4 +1,4 @@
-const { ApolloServer } = require("apollo-server");
+const { ApolloServer, PubSub } = require("apollo-server");
 const gql = require("graphql-tag"); //installed with ApolloServer as dependency
 const mongoose = require("mongoose");
 
@@ -10,12 +10,14 @@ const resolvers = require("./graphql/resolvers"); //since it's in index, no need
 const { MONGODB } = require("./config.js");
 
 
+const pubsub = new PubSub(); //adds publish/subscribe
+
 
 //Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({ req }) //takes request body and forwards it to context
+  context: ({ req }) => ({ req, pubsub }) //takes request body and forwards it to context
 });
 
 //connect to DB before launching server
