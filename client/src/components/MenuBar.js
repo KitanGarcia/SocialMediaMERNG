@@ -5,7 +5,7 @@ function MenuBar() {
   const [activeItem, setActiveItem] = useState("");
 
   //change activeItem to item with that name
-  const handleItemClick = (e, { name }) => this.setActiveItem(name);
+  const handleItemClick = (e, { name }) => setActiveItem(name);
 
   //don't need a render. Since this component is a function, we just return
 
@@ -13,7 +13,7 @@ function MenuBar() {
   //if active property is true, it will be highlighted
   //name (with first letter capitalized) will be rendered as the name of the tab
 
-  //take change this.handleItemClick to handleItemClick since we MenuBar is a function instead of a class
+  //change this.handleItemClick to handleItemClick since MenuBar is a function instead of a class
   return (
       <Menu pointing secondary>
         <Menu.Item
