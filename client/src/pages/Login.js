@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
+import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks"
 
 function Login(props) {
+  const context = useContext(AuthContext); //has user, login, and logout
   const [errors, setErrors] = useState({});
 
   //using hooks to implement onChange and onSubmit
@@ -23,7 +25,10 @@ function Login(props) {
 
   //update is triggered if mutation is successfully executed
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update(_, result) {
+
+    //update with result.data.login.userData
+    update(_, { data: {login: userData}}) {
+      context.login(userData);
       props.history.push("/"); //redirect to homepage after registering
     },
     //graphQLErrors gives one error with an object that contains the other errors

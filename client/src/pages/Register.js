@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
-import { useForm } from "../util/hooks"
+import { AuthContext } from "../context/auth";
+import { useForm } from "../util/hooks";
 
 function Register(props) {
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
 
   //using hooks to implement onChange and onSubmit
@@ -25,9 +27,13 @@ function Register(props) {
 
   //update is triggered if mutation is successfully executed
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, result) {
+
+    //update result.data.register with alias as userData
+    update(_, { data: { register: userData}}) {
+      context.login(userData); //when we register, we should also login
       props.history.push("/"); //redirect to homepage after registering
     },
+
     //graphQLErrors gives one error with an object that contains the other errors
     onError(err) {
       console.log(err.graphQLErrors[0].extensions.exception.errors);
