@@ -3,23 +3,29 @@ import { Form, Button } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 
+import { useForm } from "../util/hooks"
+
 function Register(props) {
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState({
+
+  //using hooks to implement onChange and onSubmit
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: "",
     email: "",
     password: "",
     confirmPassword: ""
   });
 
-  const onChange = (event) => {
-    setValues({...values, [event.target.name]: event.target.value});
+  //needs to be done and passed as callback above because hoisting allows it to work and not addUser
+  //functions with function keyword are hoisted, but not other functions so they are recognized before definition
+  //hacky workaround
+  function registerUser() {
+    addUser();
   }
 
   //update is triggered if mutation is successfully executed
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, result) {
-      console.log(result);
       props.history.push("/"); //redirect to homepage after registering
     },
     //graphQLErrors gives one error with an object that contains the other errors
@@ -29,12 +35,6 @@ function Register(props) {
     },
     variables: values
   });
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    addUser();
-  };
-
 
   return (
     <div className="form-container">
