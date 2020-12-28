@@ -13,7 +13,7 @@ function Home() {
   //ternary shows loading posts when loading and all the posts otherwise
   return (
     <Grid columns={3}>
-      <Grid.Row>
+      <Grid.Row className="page-title">
         <h1>Recent Posts</h1>
       </Grid.Row>
       <Grid.Row>
