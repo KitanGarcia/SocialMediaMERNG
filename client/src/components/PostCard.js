@@ -4,13 +4,10 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 import { AuthContext } from "../context/auth";
+import LikeButton from "./LikeButton";
 
 function PostCard({ post: {body, createdAt, id, username, likeCount, commentCount, likes, comments }}) {
   const { user } = useContext(AuthContext);
-
-  function likePost() {
-    console.log("Like Post!!!");
-  }
 
   return (
     <Card fluid>
@@ -25,15 +22,9 @@ function PostCard({ post: {body, createdAt, id, username, likeCount, commentCoun
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button as='div' labelPosition='right' onClick={likePost}>
-          <Button color='teal' basic>
-            <Icon name='heart' />
-          </Button>
-          <Label as='a' basic color='teal' pointing='left'>
-            {likeCount}
-          </Label>
-        </Button>
-        <Button as='div' labelPosition='right' as={Link} to={`/posts/${id}`}>
+        {/*Pass id, likes, likeCount to LikeButton component*/}
+        <LikeButton user={user} post={{id, likes, likeCount}}/>
+        <Button labelPosition='right' as={Link} to={`/posts/${id}`}>
           <Button color='blue' basic>
             <Icon name='comments' />
           </Button>
